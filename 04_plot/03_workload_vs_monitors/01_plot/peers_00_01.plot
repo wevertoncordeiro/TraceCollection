@@ -90,10 +90,10 @@ set lmargin at screen 0.110
 set rmargin at screen 0.530
 
 set tmargin at screen 0.90
-set bmargin at screen 0.20
+set bmargin at screen 0.22
 
-set label at screen 0.30,0.04 "(a) S1" #font "Times"
-set label at screen 0.75,0.04 "(b) S2" #font "Times"
+set label at screen 0.320,0.03 center "(a) S1" #font "Times"
+set label at screen 0.770,0.03 center "(b) S2" #font "Times"
 
 
 unset key
@@ -112,7 +112,7 @@ plot \
 
 
 ### Second plot
-set lmargin at screen 0.550
+set lmargin at screen 0.560
 set rmargin at screen 0.980
 
 
@@ -134,17 +134,18 @@ unset xlabel
 unset ylabel
 set yrange [0:1]
  
-set key at screen 0.30,.975 maxrows 1
+set key at screen 0.35,.975 maxrows 1
 
 plot \
 2 t 'Collected Unique Peers' with p ls 1 
 
 
-set key at screen 0.50,.975  maxrows 1
+set key at screen 0.65,.975  maxrows 1
 plot \
 2 t 'Sum Peers' with p ls 2
 
 
-set key at screen 0.70,.975  maxrows 1
+set key at screen 0.95,.975  maxrows 1
 plot \
 2 t 'Max Peers' with p ls 3
+

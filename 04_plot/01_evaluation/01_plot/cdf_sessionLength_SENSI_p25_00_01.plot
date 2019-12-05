@@ -82,8 +82,8 @@ set rmargin at screen 0.500
 set tmargin at screen 0.83
 set bmargin at screen 0.20
 
-set label at screen 0.30,0.04 "(a) S1" #font "Times"
-set label at screen 0.75,0.04 "(b) S2" #font "Times"
+set label at screen 0.300,0.04 center  "(a) S1" #font "Times"
+set label at screen 0.750,0.04 center  "(b) S2" #font "Times"
 
 
 

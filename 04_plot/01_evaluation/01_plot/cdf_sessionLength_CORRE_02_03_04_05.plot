@@ -83,19 +83,22 @@ set rmargin at screen 0.275
 set tmargin at screen 0.90
 set bmargin at screen 0.20
 
-set label at screen 0.155,0.03 "(a) S3" #font "Times"
-set label at screen 0.390,0.03 "(b) S4" #font "Times"
-set label at screen 0.625,0.03 "(c) S5" #font "Times"
-set label at screen 0.860,0.03 "(d) S6" #font "Times"
+set label at screen 0.167,0.03 center  "(a) S3" #font "Times"
+set label at screen 0.402,0.03 center  "(b) S4" #font "Times"
+set label at screen 0.637,0.03 center  "(c) S5" #font "Times"
+set label at screen 0.872,0.03 center  "(d) S6" #font "Times"
 
 unset key
 
+#S3
 plot \
-'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_ORIGINAL_RES-100_FAIL-000.txt' using 2:1 title 'In Original' with lp ls 1 ,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
+'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_ORIGINAL_RES-100_FAIL-000.txt'          using 2:1 title 'In Original' with lp ls 1 ,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
+
+
 
 
 ### Second plot
@@ -105,12 +108,13 @@ set rmargin at screen 0.510
 unset ylabel
 unset ytics
 
+#S4
 plot \
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_ORIGINAL_RES-100_FAIL-000.txt'          using 2:1 title 'In Original' with lp ls 1 ,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
+'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_ORIGINAL_RES-100_FAIL-000.txt' using 2:1 title 'In Original' with lp ls 1 ,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_02_Increibles_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
 
 
 
@@ -119,25 +123,26 @@ plot \
 set lmargin at screen 0.530
 set rmargin at screen 0.745
 
+#S5
 plot \
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_ORIGINAL_RES-100_FAIL-000.txt'          using 2:1 title 'In Original' with lp ls 1 ,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
+'04_plot/01_evaluation/00_data/session_lengthcdf_05_Mission_SNAP_ORIGINAL_RES-100_FAIL-000.txt' using 2:1 title 'In Original' with lp ls 1 ,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_05_Mission_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_05_Mission_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_05_Mission_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_05_Mission_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
 
 
 ### Fourth plot
 set lmargin at screen 0.765
 set rmargin at screen 0.980
 
+#S6
 plot \
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_ORIGINAL_RES-100_FAIL-000.txt'          using 2:1 title 'In Original' with lp ls 1 ,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
-'04_plot/01_evaluation/00_data/session_lengthcdf_03_Happytime_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
-
+'04_plot/01_evaluation/00_data/session_lengthcdf_04_Star_SNAP_ORIGINAL_RES-100_FAIL-000.txt' using 2:1 title 'In Original' with lp ls 1 ,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_04_Star_SNAP_CORRECTED_RES-100_FAIL-000_ALP-060.txt' using 2:1 title 'Out {/Symbol a}=.60' with lp ls 2,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_04_Star_SNAP_CORRECTED_RES-100_FAIL-000_ALP-075.txt' using 2:1 title 'Out {/Symbol a}=.75' with lp ls 3,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_04_Star_SNAP_CORRECTED_RES-100_FAIL-000_ALP-085.txt' using 2:1 title 'Out {/Symbol a}=.85' with lp ls 4,\
+'04_plot/01_evaluation/00_data/session_lengthcdf_04_Star_SNAP_CORRECTED_RES-100_FAIL-000_ALP-095.txt' using 2:1 title 'Out {/Symbol a}=.95' with lp ls 5
 
 
 
