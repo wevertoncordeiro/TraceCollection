@@ -103,3 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 04_plot/03_workload_vs_monitors/.DS_Store
+.DS_Store

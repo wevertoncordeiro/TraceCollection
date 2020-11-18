@@ -1,6 +1,10 @@
 #!/usr/bin/python
 '''
-Main
+Created on Dec 06, 2018
+
+Last update: Oct 05, 2019
+
+@author: Rodrigo Mansilha
 '''
 import sys, time, getopt, random,  commands, os, datetime
 
@@ -37,10 +41,17 @@ DEFAULT_EVALUATE_CORRECTION = False
 RANGES = [0]
 RESOLUTION_PROBABILITIES = [100]
 
+
 FAILURE_PROBABILITIES = [00, 1, 5, 10, 15, 20, 25, 50, 75, 90]
+#FAILURE_PROBABILITIES = [75, 90]
+#FAILURE_PROBABILITIES = [00]
 
-ALPHAS = [60, 75, 85, 95]
+#ALPHAS = [60, 75, 90]
+ALPHAS = [75, 85, 95]
 
+#TRACKERS = ["", "udp://exodus.desync.com:6969/announce", "udp://tracker.cyberia.is:6969/announce"]
+#TRACKERS = ["","udp://exodus.desync.com:6969/announce"]
+#TRACKERS = ["", "udp://tracker.opentrackr.org:1337/announce", "udp://exodus.desync.com:6969/announce", "udp://tracker.cyberia.is:6969/announce"]
 
 cmd = "cat %s " % DEFAULT_TRACKERS_FILE
 TRACKERS = commands.getoutput(cmd).split("\n")
@@ -101,25 +112,37 @@ class Dirs:
 
 
 names = {}
-
-#S1
 names['3C1D52279C6DCAB8B61AA58B6C2574A0BE2933E0'] = ['00_Collection_of_250_decrypted_3DS_ROMs_for_Citra_Emulator',
 													 '00_Collection']
-#S2
 names['BA329B763627FA256CC1B311FBD3124F7B28E174'] = ['01_Aerofly_FS_2_Flight_Simulator-RELOADED',
 													 '01_Aerofly']
-#S4
+
+# names['90E8A665EF71C89BA562D9D25E2CFCC11FDD70BC'] = ['02_NBA_2K18-CODEX', '02_NBA'] #Los Increibles 2 [1080p][Castellano][wWw EliteTorrent BiZ]
+# names['0160FA6AF624241D0979362A564B7FEA65390C6A'] = ['03_Los_Increibles_2_1080p_Castellano_wWw_EliteTorrent_BiZ',
+# 													 '03_Los_Increibles'] #The Happytime Murders 2018 1080p BluRay x264 DTS-FGT
+# names['7B91F6E5131C8176828458579D38BF0AD78E9C64'] = ['04_The_Happytime_Murders_2018_1080p_BluRay_x264_DTS-FGT',
+# 													 '04_The_Happytime'] #A Star is Born 2018 1080p KORSUB HDRip x264 AAC2 0-STUTTERSHIT
+# names['E03A72E6864336B9BB388A7207A8FF1E4C543EBA'] = [
+# 	'05_A_Star_is_Born_2018_1080p_KORSUB_HDRip_x264_AAC2_0-STUTTERSHIT', '05_A_Star'] #Mission Impossible - Fallout (2018) [BluRay] (1080p) [YTS AM]
+#
+
 names['90E8A665EF71C89BA562D9D25E2CFCC11FDD70BC'] = ['02_Los_Increibles_2_1080p_Castellano_wWw_EliteTorrent_BiZ',
 													 '02_Increibles']
-#S3
+
 names['0160FA6AF624241D0979362A564B7FEA65390C6A'] = ['03_The_Happytime_Murders_2018_1080p_BluRay_x264_DTS-FGT',
 													 '03_Happytime']
-#S6
+
 names['7B91F6E5131C8176828458579D38BF0AD78E9C64'] = ['04_A_Star_is_Born_2018_1080p_KORSUB_HDRip_x264_AAC2_0-STUTTERSHIT',
 													 '04_Star']
-#S5
+
 names['E03A72E6864336B9BB388A7207A8FF1E4C543EBA'] = ['05_Mission_Impossible_Fallout_2018_BluRay_1080p_YTS_AM',
 													 '05_Mission']
+
+tracker_names = {}
+tracker_names["udp://tracker.opentrackr.org:1337/announce"] = 'opentrackr'
+tracker_names["udp://exodus.desync.com:6969/announce"] = 'desync'
+tracker_names["udp://tracker.cyberia.is:6969/announce"] = 'cyberia'
+
 
 class Torrent:
 	def name(self):
@@ -320,30 +343,22 @@ def print_usage():
 	#    print "-l --peerlistsize : max peer list Size. Value=0 means no limit. Default value=0 "
 	print ""
 	print "OPERATIONS:"
-
-	# OPTION DISABLED (requires original source files)
-	#print "-s --swarm    : do convert from directory to swarm?               (default=%s) (analyze1_convert_from_directory_to_swarm)" % str(
-	#	DEFAULT_CONVERT_FROM_DIR_TO_SWARM)
-
-	# OPTION DISABLED (requires original source files)
-	#print "-t --trace    : do convert from swarm to trace?                   (default=%s) (analyze2_convert_from_swarm_to_trace) " % str(
-	#	DEFAULT_CONVERT_FROM_SWARM_TO_TRACE)
-
+	print "-s --swarm    : do convert from directory to swarm?               (default=%s) (analyze1_convert_from_directory_to_swarm)" % str(
+		DEFAULT_CONVERT_FROM_DIR_TO_SWARM)
+	print "-t --trace    : do convert from swarm to trace?                   (default=%s) (analyze2_convert_from_swarm_to_trace) " % str(
+		DEFAULT_CONVERT_FROM_SWARM_TO_TRACE)
 	print "-f --failure  : do introduce failures?                            (default=%s) (script2_emulate_snapshot_failures.sh)" % str(
 		DEFAULT_INTRODUCE_FAILURE)
 	print "-c --correct  : do convert from trace to sesssion and correct it? (default=%s) (analyze3_correct_trace)" % str(
 		DEFAULT_TRACE_CORRECTION)
-
 	print "-e --evaluate : do evaluate traces (i.e. make CDF plots)?         (default=%s) (analyze4_evaluate_trace.py) " % str(
 		DEFAULT_TRACE_EVALUATION)
-
+	#print "-E --evaluateall : do evaluate/compare all traces?  (default=%s) (analyze4_evaluate_trace.py) " % str(
+	#	DEFAULT_TRACE_EVALUATION_ALL)
 	print "-l --plot     : do plot results?                                  (default=%s) (analyze5_plot_scatter_peers_over_time) " % str(
 		DEFAULT_TRACE_PLOT)
-
-	# DISABLED (requires original files)
-	#print "-o --plot2    : do plot results?                                  (default=%s) (analyze6_plot_workload_vs_monitors_over_time)" % str(
-	#	DEFAULT_TRACE_PLOT_2)
-
+	print "-o --plot2    : do plot results?                                  (default=%s) (analyze6_plot_workload_vs_monitors_over_time)" % str(
+		DEFAULT_TRACE_PLOT_2)
 	print "-E --evaluate2: do analyze corrections (i.e. make Table 2)?       (default=%s) (analyze7_evaluate_correction.py) " % str(
 		DEFAULT_EVALUATE_CORRECTION)
 	# print "-m --mon=[number] number of monitoring results to analyze 1<=x<=50"
@@ -511,7 +526,7 @@ def do_convert_from_swarm_to_trace(torrent_, resolution_):
 
 
 def do_introduce_failure(torrent_, resolution_, failure_probability_):
-
+	#TODO consider using snapshotFileName instead of traceFileName
 	print ""
 	print "\t\t\tINTRODUCE FAILURE"
 	print "\t\t\t-----------------"
@@ -581,7 +596,7 @@ def do_evaluate_correction(torrent_):
 				print "\t\t\t\t\tALPHA: %d " % alpha
 				snapshot_corrected = torrent.snapshotCorrectedFileName(alpha, resolution, failure_probability)
 				out_log_file_name = torrent_.failure_probability_log_file_name(alpha, resolution, failure_probability)
-				cmd = "python analyze7_evaluate_correction.py "
+				cmd = "python analyze7_evaluate_correction_NEW3.py "
 				cmd += " --output=%s " % file_output
 				cmd += " --ground=%s " % snapshot_ground_truth
 				cmd += " --original=%s " % snapshot_original
@@ -880,8 +895,8 @@ if __name__ == '__main__':
 	print ""
 
 	if not os.path.isdir(dir_source):
-		print "Warning: data source dir (%s) not found." % dir_source
-		#sys.exit(-1)
+		print "Exception: data source dir (%s) not found." % dir_source
+		sys.exit(-1)
 
 	if not os.path.isfile(magnet_file):
 		print "Exception: magnet file (%s) not found." % magnet_file

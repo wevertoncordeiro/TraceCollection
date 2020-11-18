@@ -287,17 +287,17 @@ if __name__ == '__main__':
 		file_out = open(file_name_output, 'a')
 		file_out.write("%% %d %d [FAILED: FILE NOT FOUND]\n" % (failure_probability, alpha))
 
-		out = " \\omite{*%d*} " % alpha
+		out = ""# \\omite{*%d*} " % alpha
 
 		if omit_pif:
-			out += " \\omite{pif=%.02f} " % (failure_probability / 100.0)
+			out += ""# \\omite{pif=%.02f} " % (failure_probability / 100.0)
 		else:
-			out += "&     \\setf{%.02f} " % (failure_probability / 100.0)
+			out += "&     %.02f  " % (failure_probability / 100.0)
 
 		if last_alpha:
-			out += "& \\multicolumn{3}{c}{\\setf{Not corrected}} \\\\"
+			out += "& \\multicolumn{3}{c}{Not corrected} \\\\"
 		else:
-			out += "&  \\multicolumn{3}{c||}{\\setf{Not corrected}}  "
+			out += "&  \\multicolumn{3}{c||}{Not corrected}  "
 
 		out += "\n"
 		file_out.write(out)
@@ -316,9 +316,11 @@ if __name__ == '__main__':
 	count_modified_snapshots_inaccurately = 0
 	count_false_negative = 0
 	count_true_negative = 0
+	all_total = 0
 
 	exception = False
 	out = "\n"
+	outxls = "\n"
 	if debug or check:
 
 		out = "\n\n\n#######################\n"
@@ -330,12 +332,12 @@ if __name__ == '__main__':
 		line_corrected_n = read_line(file_corrected)
 		line_ground_n = read_line(file_ground)
 
-		snaps = 0
+		snaps = 1
 		modified_snaps = 0
 		missing_snaps = 0
 		true_positives = 0
 		false_positives = 0
-		true_negatives = 0
+		true_negatives = 1
 		false_negatives = 0
 
 		peer = None
@@ -401,6 +403,8 @@ if __name__ == '__main__':
 					# true_negatives += 1
 					# false_negatives += 1
 
+					true_negatives -= 1
+
 				elif line_ground_n != line_original_n and line_ground_n == line_corrected_n and line_original_n == line_corrected_n:
 					print_debug("\t[G!=O] [G==C] [O==C]")
 					print "[ERROR]"
@@ -436,6 +440,8 @@ if __name__ == '__main__':
 					# true_negatives += 1
 					false_negatives += 1
 
+
+
 				elif line_ground_n != line_original_n and line_ground_n != line_corrected_n and line_original_n != line_corrected_n:
 					print_debug("\t[G!=O] [G!=C] [O!=C]")
 
@@ -450,6 +456,8 @@ if __name__ == '__main__':
 					peer_corrected = -1
 					snap_ground = -1
 					snap_corrected = -1
+
+
 
 					if line_ground_n is not None:
 						peer_ground = int(line_ground_n.split(" ")[0])
@@ -479,6 +487,7 @@ if __name__ == '__main__':
 						false_positives += 1
 						# true_negatives += 1
 						# false_negatives += 1
+						true_negatives -= 1
 
 					else:
 						print_debug("[NOT] peer_ground (%d) > peer_corrected  (%d) or snap_ground (%d) > snap_corrected (%d)" % (
@@ -500,6 +509,8 @@ if __name__ == '__main__':
 						# false_positives += 1
 						# true_negatives += 1
 						false_negatives += 1
+
+
 
 				else:
 					print_debug("\t[G??O] [G??C] [O??C]")
@@ -535,15 +546,31 @@ if __name__ == '__main__':
 
 		cmd = "cat %s/test/log.txt  " % dir_analysis
 
+		all_total_cmd = "wc -l %s" % file_snapshot_ground_truth
+		all_total_check_results = commands.getoutput(all_total_cmd)
+		print "all_total_check_results:", all_total_check_results
+
+
 		print " cmd: ", cmd
 		check_results = commands.getoutput(cmd).split("\n")[1]
 
 		print "check_results:", check_results
 		out += "\ncheck_results: %s\n" % check_results
+		print ""
+
+		all_total = int(all_total_check_results.split(" ")[0])
+		print "snaps           : %d %d" % (snaps, all_total),
+		out += "snaps           : %d %d" % (snaps, all_total)
+		if snaps == all_total:
+			print "[OK]"
+			out += "[OK]\n"
+		else:
+			print "[ERROR]"
+			out += "[ERROR]\n"
 
 		value = int(check_results.split(" ")[0])
-		print "miss     : %d %d" % (missing_snaps, value),
-		out += "miss     : %d %d" % (missing_snaps, value)
+		print "miss            : %d %d" % (missing_snaps, value),
+		out += "miss            : %d %d" % (missing_snaps, value)
 		if missing_snaps == value:
 			print "[OK]"
 			out += "[OK]\n"
@@ -552,39 +579,9 @@ if __name__ == '__main__':
 			out += "[ERROR]\n"
 
 		value = int(check_results.split(" ")[1])
-		print "mod      : %d %d" % (modified_snaps, value),
-		out += "mod      : %d %d" % (modified_snaps, value)
+		print "mod             : %d %d" % (modified_snaps, value),
+		out += "mod             : %d %d" % (modified_snaps, value)
 		if modified_snaps == value:
-			print "[OK]"
-			out += "[OK]\n"
-		else:
-			print "[ERROR]"
-			out += "[ERROR]\n"
-
-		value = int(check_results.split(" ")[2])
-		print "true_mod : %d %d" % (true_positives, value),
-		out += "true_mod : %d %d" % (true_positives, value)
-		if true_positives == value:
-			print "[OK]"
-			out += "[OK]\n"
-		else:
-			print "[ERROR]"
-			out += "[ERROR]\n"
-
-		# value = int(check_results.split(" ")[3])
-		# print "false_mod: %d %d" % (false_positives, value),
-		# out += "false_mod: %d %d" % (false_positives, value)
-		# if false_positives == value:
-		# 	print "[OK]"
-		# 	out += "[OK]\n"
-		# else:
-		# 	print "[ERROR]"
-		# 	out += "[ERROR]\n"
-
-		value = int(check_results.split(" ")[3])
-		print "false_neg: %d %d" % (false_negatives, value),
-		out += "false_neg: %d %d" % (false_negatives, value)
-		if false_negatives == value:
 			print "[OK]"
 			out += "[OK]\n"
 		else:
@@ -592,6 +589,54 @@ if __name__ == '__main__':
 			out += "[ERROR]\n"
 		out += "\n"
 
+		value = int(check_results.split(" ")[2])
+		print  "true_positives  : %d %d" % (true_positives, value),
+		out += "true_positives  : %d %d" % (true_positives, value)
+		if true_positives == value:
+			print "[OK]"
+			out += "[OK]\n"
+		else:
+			print "[ERROR]"
+			out += "[ERROR]\n"
+
+		value = int(check_results.split(" ")[3])
+		print "false_positives : %d %d" % (false_positives, value),
+		out += "false_positives : %d %d" % (false_positives, value)
+		if false_positives == value:
+			print "[OK]"
+			out += "[OK]\n"
+		else:
+			print "[ERROR]"
+			out += "[ERROR]\n"
+
+
+
+		#value = missing_snaps #int(check_results.split(" ")[3])
+		value = int(check_results.split(" ")[4])
+		print "false_negatives : %d %d" % (false_negatives, value),
+		out += "false_negatives : %d %d" % (false_negatives, value)
+		if false_negatives == value:
+			print "[OK]"
+			out += "[OK]\n"
+		else:
+			print "[ERROR]"
+			out += "[ERROR]\n"
+
+
+
+		unmodified_snaps = all_total - modified_snaps
+		value = unmodified_snaps - value  # int(check_results.split(" ")[3])
+		print 	"true_negatives  : %d %d" % (true_negatives, value),
+		out += "true_negatives  : %d %d" % (true_negatives, value)
+		if true_negatives == value:
+			print "[OK]"
+			out += "[OK]\n"
+		else:
+			print
+			"[ERROR]"
+			out += "[ERROR]\n"
+
+		out += "\n"
 	else:
 		cmd = " ./script_snapshot_analysis_summary.sh"
 		cmd += " -g %s" % file_snapshot_ground_truth
@@ -619,8 +664,14 @@ if __name__ == '__main__':
 		#false_positives = int(check_results.split(" ")[3])
 		#print "false_mod: %d  " % false_positives
 
-		false_negatives = int(check_results.split(" ")[3])
-		print "false_neg: %d  " % false_negatives
+		false_negatives = missing_snaps
+		# int(check_results.split(" ")[3])
+		# print "false_neg: %d  " % false_negatives
+
+		cmd = "wc -l %s" % file_snapshot_ground_truth
+		check_results = commands.getoutput(cmd)
+		print "check_results2:", check_results
+		all_total = int(check_results.split(" ")[0])
 
 	if not os.path.isfile(file_name_output):
 		print "FILE NOT FOUND: ", file_name_output
@@ -641,7 +692,8 @@ if __name__ == '__main__':
 		out += "\n"
 
 	false_positives = modified_snaps - true_positives
-	true_negatives = missing_snaps - false_negatives
+	unmodified_snaps = all_total - modified_snaps
+	true_negatives = unmodified_snaps - false_negatives # missing_snaps - false_negatives
 	out += "%% %d" % failure_probability				    #1
 	out += " %d" % alpha									#2
 	out += " %d" % count_ground_truth_snapshots				#3
@@ -657,12 +709,13 @@ if __name__ == '__main__':
 	out += "\n"
 
 	# Data for Table 2
-	out += " \\omite{*%d*} " % alpha
+	out += ""# \\omite{*%d*} " % alpha
 
 	if omit_pif:
-		out += " \\omite{pif=%.02f} " % (failure_probability / 100.0)
+		out += ""# \\omite{pif=%.02f} " % (failure_probability / 100.0)
 	else:
-		out += " \\setf{%.02f} " % (failure_probability / 100.0)
+		out += "  %.02f  " % (failure_probability / 100.0)
+		outxls += "%.02f"% (failure_probability / 100.0)
 
 	# gap = None
 	# if out_log_file_name is not None:
@@ -690,6 +743,19 @@ if __name__ == '__main__':
 	# precision is 5/8 while its
 	# recall is 5/12.
 
+
+	outxls += "\t%d" % (all_total)
+	outxls += "\t%d" % (missing_snaps + modified_snaps)
+	outxls += "\t%d" % missing_snaps
+	outxls += "\t%d" % modified_snaps
+	outxls += "\t%d" % unmodified_snaps
+
+	outxls += "\t%d" % (true_positives + false_positives + false_negatives + true_negatives)
+	outxls += "\t%d" % true_positives
+	outxls += "\t%d" % true_negatives
+	outxls += "\t%d" % false_positives
+	outxls += "\t%d" % false_negatives
+
 	# https://blog.exsilio.com/all/accuracy-precision-recall-f1-score-interpretation-of-performance-measures/#:~:text=F1%20score%20%2D%20F1%20Score%20is,average%20of%20Precision%20and%20Recall.&text=Accuracy%20works%20best%20if%20false,case%2C%20F1%20score%20is%200.701.
 
 	# Accuracy = TP+TN/TP+FP+FN+TN
@@ -698,9 +764,11 @@ if __name__ == '__main__':
 	accuracy = None
 	if b > 0:
 		accuracy = 1.0 * a / b
-		out += "& \\setf{%.02f} " % accuracy
+		out += "&  %.02f  " % accuracy
+		outxls += "\t%.02f" % accuracy
 	else:
-		out += "& \\setf{--} "
+		out += "&  --  "
+		outxls += "\t--"
 
 	# Precision = TP / TP + FP
 	a = true_positives
@@ -708,9 +776,11 @@ if __name__ == '__main__':
 	precision = None
 	if b > 0:
 		precision = 1.0 * a/b
-		out += "& \\setf{%.02f} " % precision
+		out += "&  %.02f  " % precision
+		outxls += "\t%.02f" % precision
 	else:
-		out += "& \\setf{--} "
+		out += "&  --  "
+		outxls += "\t--"
 
 	# Recall = TP/TP+FN
 	a = true_positives
@@ -718,9 +788,11 @@ if __name__ == '__main__':
 	recall = None
 	if b > 0:
 		recall = 1.0 * a / b
-		out += "& \\setf{%.02f} " % recall
+		out += "&  %.02f  " % recall
+		outxls += "\t%.02f" % recall
 	else:
-		out += "& \\setf{--} "
+		out += "& -- "
+		outxls += "\t--"
 
 	# # F1 Score = 2*(Recall * Precision) / (Recall + Precision)
 	# if recall is not None and precision is not None:
@@ -732,12 +804,18 @@ if __name__ == '__main__':
 
 	if last_alpha:
 		out += "\\\\"
+		outxls += "\n"
 	else:
 		out += " "
+		outxls += "\t"
 
 	out += "\n\n"
 	file_out = open(file_name_output, 'a+')
 	file_out.write(out)
+	file_out.close()
+
+	file_out = open(file_name_output+".xls", 'a+')
+	file_out.write(outxls)
 	file_out.close()
 
 	print ""
